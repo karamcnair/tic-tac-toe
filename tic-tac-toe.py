@@ -29,6 +29,7 @@ class Board(object):
     def empties(self):
         indexes = [i for i, x in enumerate(self.squares) if x == ' ']
         print 'empties = ' + `indexes`
+        return indexes
         #todo - use in computer play selection
 
     def hasEmpties(self):
@@ -115,7 +116,7 @@ class Player(object):
 
         # where CAN I play?
         empties = board.empties()
-        print "empties = " + `empties`
+        print "computer empties = " + `empties`
 
         oppo_wins = []
         # this would be to find any possible 'better' spaces b/c I already have one lined up
@@ -131,12 +132,12 @@ class Player(object):
             temp_squares[play_index] = self.my_token
 
             # the first winning position is my choice b/c it ends the game
-            if wins_game(squares):
+            if Board.wins_game(board.squares):
                 return play_index
             else:
                 temp_squares[play_index] = self.oppo_token
                 # keep track of opponent wins to block!
-                if wins_game(squares):
+                if Board.wins_game(board.squares):
                     oppo_wins.append(play_index)
                 else:
                     # this is kinda bogus b/c it might be one with an opponent but I don't want to drill into that yet
