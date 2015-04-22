@@ -2,13 +2,27 @@
         # where CAN I play
         empties = board.empties()
         oppo_wins = []
+
+        # this would be to find any possible 'better' spaces b/c I already have one lined up
         my_partials = []
 
 
         # this feels like it would be simplest (at this point) to clone the board & test each empty for me & my opp
+        for play_index in empties:
+        	temp_squares = list(board.squares)
+        	temp_squares[play_index] = self.my_token
 
+        	# the first winning position is my choice b/c it ends the game
+        	if wins_game(squares):
+        		return play_index
+        	else:
+        		temp_squares[play_index] = self.oppo_token
+        		# keep track of opponent wins to block!
+        		if wins_game(squares):
+        			oppo_wins.append(play_index)
 
-        
+"""
+
         # for each of them, can I win? 
         for play_index in empties:
             play_row = play_index / 3
@@ -27,7 +41,7 @@
             for trio in trios:
             	get_trio()
 
-
+"""
 
 
 
