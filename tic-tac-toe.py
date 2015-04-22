@@ -43,7 +43,7 @@ class Board(object):
 
     # need to be able to take an array of 3 values & make sure they're a winning 'row'
     def win(self, trio_values):
-        print "called win-1"
+        print "called win-1 with " + `trio_values`
         if ' ' in trio_values:
             return False
         return all (x == trio_values[0] for x in trio_values)
@@ -57,7 +57,8 @@ class Board(object):
     def wins_game(self, squares, trio_indexes):
         print "called wins_game-3"
         trio_values = [squares[x] for x in trio_indexes]
-        return win(trio_indexes)
+        print "trio values " + `trio_values`
+        return self.win(trio_values)
 
     # this function checks if ANY wins arise from playing 'play_index' being played
     # on the current board. We need it anyway because we need to test the human entries
@@ -69,15 +70,15 @@ class Board(object):
 
         # probably GET the rows here instead so 
 
-        if self.win(self.get_trio(self.squares, Board.row[play_row])):
+        if self.wins_game(self.squares, Board.row[play_row]):
             return True
-        elif self.win(self.get_trio(self.squares, Board.col[play_col])):
+        elif self.wins_game(self.squares, Board.col[play_col]):
             return True
         elif play_index in Board.upDiag:
-            if self.win(self.get_trio(self.squares, Board.upDiag)):
+            if self.wins_game(self.squares, Board.upDiag):
                 return True
             elif play_index in Board.downDiag:
-                return self.win(self.get_trio(self.squares, Board.downDiag))
+                return self.wins_game(self.squares, Board.downDiag)
         return False
 
 
@@ -95,13 +96,11 @@ class Player(object):
 
         if self.human:
             # get input from keyboard to play
-            play_index = 0
-        else:
             empties = board.empties()
-            # use algorithm to play (remember you need to flip 
-            # regarding tokens so can check 'wins' for other player)
-            play_index = board.i
-            board.i -= 1
+            play_index = empties[0]
+
+        else:
+            play_index = self.computer_play(board)
 
         # this is the part that ties the 'wins' check to having actually played
         # need to figure out/refactor 'wins' with a 'candidate' trio instead.
@@ -111,15 +110,44 @@ class Player(object):
         return play_index
 
     def computer_play(self, board):
-        # where CAN I play
+
+        print "in computer_play with board " + `board.squares`
+
+        # where CAN I play?
         empties = board.empties()
+        print "empties = " + `empties`
 
-        # for each of them, can I win? 
+        oppo_wins = []
+        # this would be to find any possible 'better' spaces b/c I already have one lined up
+        my_partials = []
+
+        # should be prevented by preconditions, but...
+        if len(empties) == 0:
+            return None;
+
+        # this feels like it would be simplest (at this point) to clone the board & test each empty for me & my opp
         for play_index in empties:
-            play_row = play_index / 3
-            play_col = play_index % 3
-            print "cmpt row " + `play_row` + ", cmpt col " + `play_col`
+            temp_squares = list(board.squares)
+            temp_squares[play_index] = self.my_token
 
+            # the first winning position is my choice b/c it ends the game
+            if wins_game(squares):
+                return play_index
+            else:
+                temp_squares[play_index] = self.oppo_token
+                # keep track of opponent wins to block!
+                if wins_game(squares):
+                    oppo_wins.append(play_index)
+                else:
+                    # this is kinda bogus b/c it might be one with an opponent but I don't want to drill into that yet
+                    my_partials.append(play_index)
+ 
+        # if my opponent has ANY win plays, I have to block. (If more than one, I lose anyway)
+        if len(oppo_wins) > 1:
+            return oppo_wins[0]
+        if len(my_partials) > 1:
+            return my_partials[0]
+        return empties[0]           
 
 # Main
 board = Board()
