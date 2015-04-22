@@ -1,0 +1,4 @@
+- define API that both Caroline & I can use for web UI option
+- web/JS (fancypants) UI options 
+- implement human player input options from commandline
+- better selection of 3rd-tier computer plays
