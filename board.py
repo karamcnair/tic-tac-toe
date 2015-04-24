@@ -4,7 +4,6 @@ class Board(object):
     So instead I'll 'mock' the indexes for the columns & rows.
     """
     squares = [' ',' ',' ', ' ',' ',' ', ' ',' ',' ']
-    i = 8
     won = False
 
     # some helper variables for identifying each possible winning trio.
@@ -14,7 +13,7 @@ class Board(object):
     upDiag = [6, 4, 2]
 
     def __init__(self):
-        self.i = 8
+        self.won = False
 
     def display(self):
         for i in self.row[0]:

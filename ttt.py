@@ -16,6 +16,8 @@ class Tictactoe(object):
     currentPlayer = player1
     winner = None
 
+if __name__ == '__main__':
+
     while board.hasEmpties() and winner is None:
         print "======= + Player " + currentPlayer.my_token + " is a ",
         if currentPlayer.human:
