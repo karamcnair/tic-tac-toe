@@ -3,8 +3,6 @@ class Board(object):
     """ It's easier to deal with list operations on a 1D
     So instead I'll 'mock' the indexes for the columns & rows.
     """
-    squares = [' ',' ',' ', ' ',' ',' ', ' ',' ',' ']
-    won = False
 
     # some helper variables for identifying each possible winning trio.
     row = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
@@ -13,7 +11,9 @@ class Board(object):
     upDiag = [6, 4, 2]
 
     def __init__(self):
-        self.won = False
+        self.isWon = False
+        self.squares = [' ',' ',' ', ' ',' ',' ', ' ',' ',' ']
+    
 
     def display(self):
         for i in self.row[0]:
