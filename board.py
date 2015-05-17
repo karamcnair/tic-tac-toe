@@ -11,8 +11,9 @@ class Board(object):
     upDiag = [6, 4, 2]
 
     def __init__(self):
+        self.isWon = False
         self.squares = [' ',' ',' ', ' ',' ',' ', ' ',' ',' ']
-        self.won = False
+    
 
     def display(self):
         for i in self.row[0]:
